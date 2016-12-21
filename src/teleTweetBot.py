@@ -1,3 +1,7 @@
+# @Author: Javier Antonio Román López (SrGatito)
+# @Email: jasviers@gmail.com
+# @Version: alpha 2.0.1
+
 import telebot
 import tweepy
 import loginSrBot
@@ -57,7 +61,7 @@ def contra(message):
 @bot.message_handler(commands=['infoUser'])
 def infoUser(message):
         if existUser(message.text[10:]):
-               user = api.get_user(message.text[10:])
+                user = api.get_user(message.text[10:])
         else:
                 bot.reply_to(message, "Ese usuario no existe, compruebe que el nombre esta bien escrito")
 
@@ -76,12 +80,10 @@ def block(message):
 def timeline(message):
 	if confirmUser(message):
 		tl = api.home_timeline()
-		n = 0
-		while n < 20: 
-			bot.reply_to(message, str(tl[n].text))
-			n += 1
+		for tweet in tl: 
+			bot.reply_to(message, )
 
-@bot.message_handler(commands = ['delete'])
+@bot.message_handler(commands=['delete'])
 def delete(message):
 	if confirmUser(message):
 		tl = api.home_timeline()
