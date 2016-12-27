@@ -15,7 +15,7 @@ ACCESS_SECRET=""
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
-api = tweepy.API(auth)
+twitter = tweepy.API(auth)
 
 '''
 SrLogin = loginSrBot.loginSrBot("jasviers7","patata")
@@ -25,7 +25,7 @@ Contra = ""
 #Funciones auxiliares
 
 def confirmateUser():
-        print('En construccion')
+        return True
 
 def existUser(text):
         try:
@@ -43,7 +43,7 @@ def hello(message):
 @bot.message_handler(commands=['tweet'])
 def tweet(message):
         if len(message.text)< 147:
-                api.update_status(message.text[7:])
+                twitter.update_status(message.text[7:])
                 bot.reply_to(message, "Tweet publicado")
         else:
                 bot.reply_to(message, "El tweet es demasiado largo, el maximo son 140 caracteres")
@@ -61,42 +61,55 @@ def contra(message):
 @bot.message_handler(commands=['infoUser'])
 def infoUser(message):
         if existUser(message.text[10:]):
-                user = api.get_user(message.text[10:])
+                user = twitter.get_user(message.text[10:])
         else:
                 bot.reply_to(message, "Ese usuario no existe, compruebe que el nombre esta bien escrito")
 
 @bot.message_handler(commands=['infoMe'])
 def infoMe(message):
-        user = api.me()
+        user = twitter.me()
         
 @bot.message_handler(commands=['block'])
 def block(message):
-        if existUser(message.taxt[7:]):
-                api.create_block(message.text[7:])
+        if existUser(message.text[7:]) and confirmateUser():
+                twitter.create_block(message.text[7:])
         else:
                 bot.reply_to(message,"")
 
 @bot.message_handler(commands=['tl'])
 def timeline(message):
-	if confirmUser(message):
-		tl = api.home_timeline()
+	if confirmateUser():
+		tl = twitter.home_timeline()
 		for tweet in tl: 
 			bot.reply_to(message, )
 
 @bot.message_handler(commands=['delete'])
 def delete(message):
-	if confirmUser(message):
-		tl = api.home_timeline()
+	if confirmateUser():
+		tl = twitter.home_timeline()
 		n = 0
-		encontrado = True #Cambiar el puto nombre
-		while encontrado:
+		encontrado = True #Cambiar el nombre
+		while encontrado: #Investigar porque hice este tipo de cagada tan horrible
 			if api.me() == tl[n].user.id:
 				api.destroy_status(tl[n].id)
 				bot.reply_to(message, "The last tweet is delete")
 				encontrado = False
 
+@bot.message_handler(commands=['block'])
+def block(message):
+        if existUser(message.text[7:]) and confirmateUser() :
+                twitter.create_block(message.text[7:])
+                bot.reply:to(message, "Se bloqueo de forma correcta.")
+        else:
+                bot.reply_to(message, "No se pudo bloquear.")
 
-                                
+@bot.message_handler(commands=['unblock'])
+def unblock(message):
+        if existUser(message.text[9:]) and confirmateUser() :
+                twitter.destroy_block(message.text[9:])
+                bot.reply:to(message, "Se desbloqueo de forma correcta.")
+        else:
+                bot.reply_to(message, "No se pudo desbloquear.")
                 
 '''
 @bot.message_handler(commands=[""])
