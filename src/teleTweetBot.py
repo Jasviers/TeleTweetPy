@@ -1,10 +1,10 @@
-# @Author: Javier Antonio Román López (SrGatito)
-# @Email: jasviers@gmail.com
-# @Version: alpha 2.0.1
+# -*- coding: utf-8 -*-
+# Author: Javier Antonio Román López (SrGatito)
+# Email: jasviers@gmail.com
+# Version: alpha 2.0.1
 
 import telebot
 import tweepy
-import loginSrBot
 
 #Creacion de objetos necesarios
 bot = telebot.TeleBot("")
@@ -99,7 +99,7 @@ def delete(message):
 def block(message):
         if existUser(message.text[7:]) and confirmateUser() :
                 twitter.create_block(message.text[7:])
-                bot.reply:to(message, "Se bloqueo de forma correcta.")
+                bot.reply_to(message, "Se bloqueo de forma correcta.")
         else:
                 bot.reply_to(message, "No se pudo bloquear.")
 
@@ -107,14 +107,18 @@ def block(message):
 def unblock(message):
         if existUser(message.text[9:]) and confirmateUser() :
                 twitter.destroy_block(message.text[9:])
-                bot.reply:to(message, "Se desbloqueo de forma correcta.")
+                bot.reply_to(message, "Se desbloqueo de forma correcta.")
         else:
                 bot.reply_to(message, "No se pudo desbloquear.")
-                
-'''
-@bot.message_handler(commands=[""])
-def xxx():
 
+
+@bot.message_handler(commands=['changeName'])
+def changeName(message):
+        if len(message.text)<=32 and confirmateUser():
+                twitter.update_profile(message.text[12:])
+
+
+'''
 @bot.message_handler(commands=[""])
 def xxx():
 '''
